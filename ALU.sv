@@ -34,7 +34,7 @@ module ALU(
 	 	'b100 : OUT = INPUT_A + INPUT_B; // inc rd [imm]
 		'b101 : OUT = INPUT_A <<<< INPUT_B; //shl
 		'b110 : OUT = INPUT_A >>>> INPUT_B; //shr
-		'b111 : OUT = INPUT_A and INPUT_B;
+		'b111 : OUT = INPUT_A and INPUT_B; //and
 	endcase
 	
 	

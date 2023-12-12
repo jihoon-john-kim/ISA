@@ -17,15 +17,13 @@
 import definitions::*;			  // includes package "definitions"
 module reg_file #(parameter W=8, D=3)(
   input           clk,
-                  write_en,
                   two_reg,
-  input  [ D-1:0] raddrA,
-                  raddrB,
+  input  [ D-1:0] raddrB,
                   raddrC,
  //                 raddrD,
-                  waddr,
-//  input           readMem,
-//  input  [ W-1:0] data_in_alu,
+               
+  input           writeFromMem,
+  input  [ W-1:0] data_in,
 //  input  [ W-1:0] data_in_mem,
   output logic [W-1:0] data_outA,
   output logic [W-1:0] data_outB,
@@ -40,14 +38,17 @@ module reg_file #(parameter W=8, D=3)(
 logic [W-1:0] registers[16];
 
 // combinational reads
-always_comb 
+always_comb //TODO: need to revise based on how clocking actually works
 begin
   if(two_reg) 
   begin
 	  data_outA = registers[raddrB];
 	  data_outB = registers[raddrC];
+    registers[raddrB] = data_in;
   end
-else 
+  else if(writeFromMem)
+    registers[0111] = data_in; //$t7
+  else
   begin
     data_outA = registers[raddrB];
 	  data_outB = rraddrC;
@@ -57,6 +58,8 @@ else
 //	actBlockBit = registers[rACT][0];
 //	memBlock = registers[rMEM];
 //	resultBlock = registers[rRES][2:0];
+  
+
 end
 	
 // sequential (clocked) writes

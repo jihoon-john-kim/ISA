@@ -4,6 +4,7 @@
 // Description: Verilog module -- instruction ROM 	
 //
 module memory #(parameter A=6, W=8) (
+  input               clk,
   input               write_enable,
   input       [A-1:0] InstAddress,
   input       [W-1:0] InputData,
@@ -17,9 +18,10 @@ module memory #(parameter A=6, W=8) (
   always_comb
   begin
     InstrOut = inst_rom[InstAddress];
-
-    if(write_enable)
-      inst_rom[InstAddress] = InputData;
   end
+
+  always_ff @ (posedge clk)
+  if(write_enable)
+      inst_rom[InstAddress] = InputData;
 
 endmodule

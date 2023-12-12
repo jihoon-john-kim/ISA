@@ -1,23 +1,26 @@
-module TopLevel;
+module TopLevel (
+
+    input logic clk,
+    input logic reset,
+
+    output done
+);
 
     //from instr mem
-    // 012_345_679
-    logic [2:0] opcode; //first  3 bits {012}
-    logic [2:0] rd; //2nd 3 bits {345}
-    logic [2:0] rs: //3rd 3 bits {678}
+    // 876_543_210
+    logic [8:0] mach_code;
 
-    logic [5:0] addr;//last 6 bits {345_678}
+    logic [2:0] opcode; //first  3 bits {876}
+    logic [2:0] rd; //2nd 3 bits {543}
+    logic [2:0] rs; //3rd 3 bits {210}
+
+    logic [5:0] addr;//last 6 bits {543_210}
 
     //from comtrol
-    bit jump_en;
-    bit writeMem_en;
-    bit readMem_en;
-    bit twoReg_en;
-
-    //output from ???
-    bit clk;
-    bit reset;
-
+    logic jump_en;
+    logic writeMem_en;
+    logic readMem_en;
+    logic twoReg_en;
     
     control control(
     .opcode (opcode), //in
@@ -32,6 +35,18 @@ module TopLevel;
     .clk (clk),  .reset (reset), .pc_inc (p_inc),//in
     .p_ct (p_ct) //out
     );
+
+    instr_ROM rom(
+        .prog_ctr(p_ct),    // in
+        .mach_code(mach_code) // out
+    );
+
+    //mach_code data handling
+    assign opcode = mach_code[8:6]; 
+    assign rd = mach_code[5:2];
+    assign rs = mach_code[2:0];
+    assign addr = mach_code[5:0];
+
 
     logic [7:0] data_outA;
     logic [7:0] data_outB;
@@ -54,13 +69,13 @@ module TopLevel;
     
 
     memory mem (
-    .write_enable (writeMem_en), .InstAddress (addr), .InputData (data_outB), // in
+    .clk (clk), .write_enable (writeMem_en), .InstAddress (addr), .InputData (data_outB), // in
     .InstrOut (mem_out) // out
     );
 
-    data_in = (readMem_en) ? mem_out : alu_out;
+    assign data_in = (readMem_en) ? mem_out : alu_out;
 
-
+    assign done = prog_ctr == 128;
 
 
 endmodule

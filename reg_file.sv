@@ -46,8 +46,7 @@ begin
 	  data_outB = registers[raddrC];
     registers[raddrB] = data_in;
   end
-  else if(writeFromMem)
-    registers[0111] = data_in; //$t7
+ 
   else
   begin
     data_outA = registers[raddrB];
@@ -63,8 +62,8 @@ begin
 end
 	
 // sequential (clocked) writes
-//always_ff @ (posedge clk)
-//  if (write_en)
-//    registers[waddr] <= (readMem) ? data_in_mem : data_in_alu;
+always_ff @ (posedge clk)
+  if(writeFromMem)
+    registers[0111] = data_in; //$t7
 
 endmodule

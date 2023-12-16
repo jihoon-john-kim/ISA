@@ -1,12 +1,9 @@
-module PC_LUT #(parameter D=12)(
-  input       [ 1:0] addr,	   // target 4 values
+module PC_LUT1 #(parameter D=9)(
+  input       [5:0] addr,	   // target 4 values
   output logic[D-1:0] target);
 
   always_comb case(addr)
- 000000: target = ;
-    0: target = -5;   // go back 5 spaces
-	1: target = 20;   // go ahead 20 spaces
-	2: target = '1;   // go back 1 space   1111_1111_1111
+    000000: target = 7;   // loop
 	default: target = 'b0;  // hold PC  
   endcase
 

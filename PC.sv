@@ -2,8 +2,9 @@
 module pc (
   input	clk,
   input reset,
+  input branch_enable,
 
-  input [9:0] pc_inc;
+  input [9:0] target;
    
   """input ZERO,					//STATUS flags
   input LESS,
@@ -26,7 +27,9 @@ module pc (
 			p_ct <= p_ct + {MAGIC, 1'b1};
 		else if (E_JMP_ACTIVE & E_JMP_READY)
 			p_ct <= p_ct + 2'b10;"""
+    else if (branch_enable)
+      p_ct <= target;
 		else
-			p_ct <= p_ct + pc_inc;//((REG_JMP | (ZERO & ZERO_JMP) | (LESS & LESS_JMP)) ? {JMP_DIST[5], JMP_DIST[5], JMP_DIST[5], JMP_DIST[5], JMP_DIST} : 1'b1); 
+			p_ct <= p_ct + 4;//((REG_JMP | (ZERO & ZERO_JMP) | (LESS & LESS_JMP)) ? {JMP_DIST[5], JMP_DIST[5], JMP_DIST[5], JMP_DIST[5], JMP_DIST} : 1'b1); 
 			
 endmodule

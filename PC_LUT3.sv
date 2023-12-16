@@ -1,4 +1,4 @@
-module PC_LUT3 #(parameter D=12)(
+module PC_LUT3 #(parameter D=9)(
   input       [ 1:0] addr,	   // target 4 values
   output logic[D-1:0] target);
 

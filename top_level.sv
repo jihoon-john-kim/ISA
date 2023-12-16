@@ -28,11 +28,11 @@ module TopLevel (
     );
 
     //pc 
-    logic[9:0] p_inc = (jump_en) ? addr : 4;
     logic[9:0] p_ct;
+    logic[9:0] target;
 
     pc pc(
-    .clk (clk),  .reset (reset), .pc_inc (p_inc),//in
+    .clk (clk),  .reset (reset), .branch_enable (jump_en), .target (target),//in
     .p_ct (p_ct) //out
     );
 
@@ -46,6 +46,11 @@ module TopLevel (
     assign rd = mach_code[5:2];
     assign rs = mach_code[2:0];
     assign addr = mach_code[5:0];
+
+    PC_LUT1 lut(
+        .addr (addr),	   // target 4 values
+        .target (target)
+    );
 
 
     logic [7:0] data_outA;
@@ -69,7 +74,7 @@ module TopLevel (
     
 
     memory mem (
-    .clk (clk), .write_enable (writeMem_en), .InstAddress (addr), .InputData (data_outB), // in
+    .clk (clk), .write_enable (writeMem_en), .InstAddress (data_outA), .InputData (data_outB), // in
     .InstrOut (mem_out) // out
     );
 

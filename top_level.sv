@@ -24,7 +24,7 @@ module TopLevel (
     
     control control(
     .opcode (opcode), //in
-    .jump_en (jump_en), .writeMem_en (writeMem_en), .readMem_en (readMem_en), .twoReg_en (twoReg_en), //out
+    .jump_en (jump_en), .writeMem_en (writeMem_en), .readMem_en (readMem_en), .twoReg_en (twoReg_en) //out
     );
 
     //pc 
@@ -61,7 +61,7 @@ module TopLevel (
     .clk (clk), .write_en (write_en), .two_reg (twoReg_en), //in bits
     .raddrB (rd), .raddrC (rs), .writeFromMem(readMem_en), .data_in(data_in), //in
 
-    .data_outA (data_outA), .data_outB (data_outB), //out
+    .data_outA (data_outA), .data_outB (data_outB) //out
     );
 
     logic [7:0] alu_out;
@@ -69,7 +69,7 @@ module TopLevel (
 
     ALU alu(          
     .OP (opcode), .INPUT_A (data_outA), .INPUT_B (data_outB), //in
-    .OUT (alu_out), //out
+    .OUT (alu_out) //out
     );
     
 

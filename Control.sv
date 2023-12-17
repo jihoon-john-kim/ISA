@@ -1,21 +1,20 @@
 module control (
 input [2:0] opcode,
 
-output jump_en,
-output writeMem_en,
-output readMem_en,
-output twoReg_en,
+output logic jump_en,
+output logic writeMem_en,
+output logic readMem_en,
+output logic twoReg_en
 
 );
 
 always_comb begin
-    twoReg_en = 0;
-    break_en = 0;
+    jump_en = 0;
     writeMem_en = 0;
     readMem_en = 0;
-    jump_en = 0;
-
-	case(OP)
+    twoReg_en = 0;
+   
+	case(opcode)
         'b000 : readMem_en = 1;//lw 
         'b001 : writeMem_en = 1;//sw
         'b010 : jump_en = 1;//bnez
